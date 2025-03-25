@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LineChart, Line, BarChart, Bar, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ScatterChart, Scatter, ZAxis } from 'recharts';
 // import { Download, Filter, ChevronDown, Users, TrendingUp, DollarSign, Clock, FileText, Bank } from 'lucide-react';
 
 const DriverAnalyticsDashboard = () => {
@@ -69,6 +69,98 @@ const DriverAnalyticsDashboard = () => {
     { month: 'Feb', '60+D7': 279, '60-D7+': 137, '60-D7-': 456 },
     { month: 'Mar', '60+D7': 365, '60-D7+': 193, '60-D7-': 762 },
   ];
+
+  const leadershipQuadrantData = [
+    { city: 'Saharanpur', collection: 150, growth: 50 },
+    { city: 'Agra', collection: 300, growth: 100 },
+    { city: 'Lucknow', collection: 280, growth: 120 },
+    { city: 'Gurugram', collection: 220, growth: 180 },
+    { city: 'Mathura', collection: 250, growth: 200 },
+    { city: 'Karnal', collection: 150, growth: 50 },
+    { city: 'Delhi', collection: 320, growth: 250 },
+    { city: 'Noida', collection: 280, growth: 220 },
+    { city: 'Jaipur', collection: 300, growth: 280 },
+    { city: 'Gwalior', collection: 320, growth: 300 }
+  ];
+
+
+  const dealerPerformanceData = [
+    { month: 'July', d15: 78, d30: 61, d7: 343, notPaid: 98 },
+    { month: 'Aug', d15: 98, d30: 70, d7: 272, notPaid: 113 },
+    { month: 'Sep', d15: 113, d30: 104, d7: 450, notPaid: 76 },
+    { month: 'Oct', d15: 76, d30: 53, d7: 338, notPaid: 325 },
+    { month: 'Nov', d15: 73, d30: 64, d7: 325, notPaid: 392 },
+    { month: 'Dec', d15: 47, d30: 42, d7: 533, notPaid: 51 },
+    { month: 'Jan', d15: 51, d30: 73, d7: 463, notPaid: 74 },
+    { month: 'Feb', d15: 74, d30: 64, d7: 133, notPaid: 73 }
+  ];
+
+  
+
+  const driverAnalyticsData = [
+    { 
+      category: '60km+D7-', 
+      segments: [
+        { name: 'green', value: 1500 },
+        { name: 'red', value: 0 },
+        { name: 'yellow', value: 0 },
+        { name: 'orange', value: 0 }
+      ]
+    },
+    { 
+      category: '60km-D7+', 
+      segments: [
+        { name: 'green', value: 0 },
+        { name: 'red', value: 0 },
+        { name: 'yellow', value: 0 },
+        { name: 'orange', value: 1800 }
+      ]
+    },
+    { 
+      category: '60km+D15-', 
+      segments: [
+        { name: 'green', value: 0 },
+        { name: 'red', value: 828 },
+        { name: 'yellow', value: 0 },
+        { name: 'orange', value: 0 }
+      ]
+    },
+    { 
+      category: '60km+D15+', 
+      segments: [
+        { name: 'green', value: 0 },
+        { name: 'red', value: 500 },
+        { name: 'yellow', value: 0 },
+        { name: 'orange', value: 0 }
+      ]
+    },
+    { 
+      category: '60km-D7', 
+      segments: [
+        { name: 'green', value: 0 },
+        { name: 'red', value: 0 },
+        { name: 'yellow', value: 700 },
+        { name: 'orange', value: 0 }
+      ]
+    },
+    { 
+      category: '60km+D7', 
+      segments: [
+        { name: 'green', value: 0 },
+        { name: 'red', value: 0 },
+        { name: 'yellow', value: 0 },
+        { name: 'orange', value: 306 }
+      ]
+    }
+  ];
+
+  const colors = {
+    green: '#4ade80',
+    red: '#f87171',
+    yellow: '#eab308',
+    orange: '#f97316'
+  };
+
 
   // Component for metric cards with improved design
   const MetricCard = ({ icon, title, value, subtitle, className = '', subValue = null, color = 'blue' }) => {
@@ -269,7 +361,7 @@ const DriverAnalyticsDashboard = () => {
               dataKey="achievement" 
               stroke="#000000" 
               strokeWidth={2} 
-              dot={{ r: 4 }}
+              dot={{ r: 3 }}
               name="Achievement"
             />
             <Line 
@@ -277,7 +369,7 @@ const DriverAnalyticsDashboard = () => {
               dataKey="directSale" 
               stroke="#9747FF" 
               strokeWidth={2} 
-              dot={{ r: 4 }}
+              dot={{ r: 3 }}
               name="Direct Sale"
             />
             <Line 
@@ -285,7 +377,7 @@ const DriverAnalyticsDashboard = () => {
               dataKey="partnership" 
               stroke="#0075FF" 
               strokeWidth={2} 
-              dot={{ r: 4 }}
+              dot={{ r: 3 }}
               name="Partnership"
             />
           </LineChart>
@@ -363,8 +455,261 @@ const DriverAnalyticsDashboard = () => {
         </ResponsiveContainer>
       </div>
     </div>
-          {/* Document Pendency Chart */}
+            {/* Leadership Quadrant Chart */}
+    <div className="bg-white rounded-lg shadow p-3 flex flex-col">
+            <h3 className="text-sm text-center font-medium text-gray-800 mb-2">Leadership Quadrant</h3>
+            <div className="flex-grow">
+              <ResponsiveContainer width="100%" height="100%">
+                <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis 
+                    type="number" 
+                    dataKey="growth" 
+                    name="Growth" 
+                    unit="%" 
+                    tick={{ fontSize: 10 }}
+                    axisLine={false} 
+                    tickLine={false}
+                  />
+                  <YAxis 
+                    type="number" 
+                    dataKey="collection" 
+                    name="Collection" 
+                    unit="%" 
+                    tick={{ fontSize: 10 }}
+                    axisLine={false} 
+                    tickLine={false}
+                  />
+                  <ZAxis type="category" dataKey="city" name="City" />
+                  <Tooltip 
+                    cursor={{ strokeDasharray: '3 3' }} 
+                    contentStyle={{ 
+                      borderRadius: '4px', 
+                      border: 'none', 
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.15)', 
+                      fontSize: '12px' 
+                    }} 
+                    formatter={(value, name, props) => [value, name, props.payload.city]}
+                  />
+                  <Scatter 
+                    name="Cities" 
+                    data={leadershipQuadrantData} 
+                    fill="#8884d8" 
+                  />
+                </ScatterChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+          
+
+          {/* Payments Chart */}
+          {/* <div className="bg-white rounded-lg shadow p-3 flex flex-col">
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-sm font-medium text-gray-800">Payment Methods</h3>
+              <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">C-SAT: 4.8</span>
+            </div>
+            <div className="flex gap-3 mb-1 justify-center">
+              <div className="flex items-center">
+                <div className="w-2 h-2 rounded-full bg-blue-600 mr-1"></div>
+                <span className="text-xs text-gray-600">Cash</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-2 h-2 rounded-full bg-emerald-500 mr-1"></div>
+                <span className="text-xs text-gray-600">Online</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-2 h-2 rounded-full bg-sky-400 mr-1"></div>
+                <span className="text-xs text-gray-600">QR</span>
+              </div>
+            </div>
+            <div className="flex-grow">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={paymentMethodsData} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
+                  <YAxis axisLine={false} tickLine={false} tickFormatter={(value) => `${value}%`} tick={{ fontSize: 10 }} />
+                  <Tooltip 
+                    formatter={(value) => [`${value}%`, '']}
+                    contentStyle={{ borderRadius: '4px', border: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', fontSize: '12px' }}
+                  />
+                  <Line type="monotone" dataKey="cash" stroke="#2563eb" strokeWidth={2} dot={{ r: 2 }} />
+                  <Line type="monotone" dataKey="online" stroke="#10b981" strokeWidth={2} dot={{ r: 2 }} />
+                  <Line type="monotone" dataKey="qr" stroke="#38bdf8" strokeWidth={2} dot={{ r: 2 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div> */}
+
+          {/* Infant Chart */}
+          {/* <div className="bg-white rounded-lg shadow p-3 flex flex-col">
+            <h3 className="text-sm font-medium text-gray-800 mb-2">Infant Performance</h3>
+            <div className="flex-grow">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={infantData.slice(-6)} barSize={12} barGap={0} barCategoryGap={8} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
+                  <Tooltip 
+                    contentStyle={{ borderRadius: '4px', border: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', fontSize: '12px' }}
+                  />
+                  <Bar dataKey="d7" name="D7" stackId="a" fill="#4ade80" radius={[3, 3, 0, 0]} />
+                  <Bar dataKey="d15" name="D15" stackId="a" fill="#fbbf24" radius={[0, 0, 0, 0]} />
+                  <Bar dataKey="d30" name="D30" stackId="a" fill="#f87171" radius={[0, 0, 3, 3]} />
+                  <Line 
+                    type="monotone" 
+                    dataKey="collection" 
+                    stroke="#6366f1" 
+                    strokeWidth={2} 
+                    name="Collection" 
+                    dot={{ r: 3 }}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div> */}
+            <div className="bg-white rounded-lg shadow p-3 flex flex-col">
+      <div className="flex justify-between items-center mb-2">
+        <h3 className="text-sm font-medium text-gray-800">Dealer Analytics</h3>
+        <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">C-Sat</span>
+      </div>
+      
+      <div className="flex gap-3 mb-1 justify-center">
+        <div className="flex items-center">
+          <div className="w-2 h-2 rounded-full bg-yellow-400 mr-1"></div>
+          <span className="text-xs text-gray-600">D15</span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-2 h-2 rounded-full bg-orange-400 mr-1"></div>
+          <span className="text-xs text-gray-600">D30</span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-2 h-2 rounded-full bg-green-400 mr-1"></div>
+          <span className="text-xs text-gray-600">D7</span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-2 h-2 rounded-full bg-gray-400 mr-1"></div>
+          <span className="text-xs text-gray-600">Not Paid</span>
+        </div>
+      </div>
+
+      <div className="flex-grow">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart 
+            data={dealerPerformanceData} 
+            barSize={20} 
+            margin={{ top: 5, right: 5, bottom: 5, left: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+            <XAxis 
+              dataKey="month" 
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fontSize: 10 }} 
+            />
+            <YAxis 
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fontSize: 10 }} 
+            />
+            <Tooltip 
+              contentStyle={{ 
+                borderRadius: '4px', 
+                border: 'none', 
+                boxShadow: '0 2px 8px rgba(0,0,0,0.15)', 
+                fontSize: '12px' 
+              }}
+            />
+            <Bar dataKey="d15" stackId="a" fill="#eab308" name="D15" />
+            <Bar dataKey="d30" stackId="a" fill="#f97316" name="D30" />
+            <Bar dataKey="d7" stackId="a" fill="#4ade80" name="D7" />
+            <Bar dataKey="notPaid" stackId="a" fill="#9ca3af" name="Not Paid" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+    {/* Driver Analytics */}
           <div className="bg-white rounded-lg shadow p-3 flex flex-col">
+      <h3 className="text-sm font-medium text-center text-gray-800 mb-2">Driver Analytics</h3>
+      
+      <div className="flex-grow">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart 
+            data={driverAnalyticsData} 
+            layout="vertical"
+            margin={{ left: 10, right: 10, top: 10, bottom: 10 }}
+          >
+            <XAxis 
+              type="number" 
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fontSize: 10 }}
+            />
+            <YAxis 
+              dataKey="category" 
+              type="category" 
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fontSize: 10 }} 
+              width={100}
+            />
+            <Tooltip 
+              cursor={{ fill: 'transparent' }}
+              contentStyle={{ 
+                borderRadius: '4px', 
+                border: 'none', 
+                boxShadow: '0 2px 8px rgba(0,0,0,0.15)', 
+                fontSize: '12px' 
+              }}
+            />
+            {Object.keys(colors).map((colorName, index) => (
+              <Bar 
+                key={colorName}
+                dataKey={`segments.${index}.value`} 
+                stackId="a" 
+                fill={colors[colorName]}
+                name={colorName}
+              />
+            ))}
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+          {/* Driver Quadrant Chart */}
+          {/* <div className="bg-white rounded-lg shadow p-3 flex flex-col">
+            <h3 className="text-sm font-medium text-gray-800 mb-2">Driver Segments</h3>
+            <div className="flex-grow">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={driverQuadrantData} barSize={14} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
+                  <Tooltip 
+                    contentStyle={{ borderRadius: '4px', border: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', fontSize: '12px' }}
+                  />
+                  <Bar dataKey="60+D7" name="Low Risk" fill="#4ade80" radius={[3, 3, 0, 0]} />
+                  <Bar dataKey="60-D7+" name="Medium Risk" fill="#fbbf24" radius={[0, 0, 0, 0]} />
+                  <Bar dataKey="60-D7-" name="High Risk" fill="#f87171" radius={[0, 0, 3, 3]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex justify-center mt-1 gap-3">
+              <div className="flex items-center">
+                <div className="w-2 h-2 rounded-full bg-green-400 mr-1"></div>
+                <span className="text-xs text-gray-600">Low Risk</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-2 h-2 rounded-full bg-amber-400 mr-1"></div>
+                <span className="text-xs text-gray-600">Medium</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-2 h-2 rounded-full bg-red-400 mr-1"></div>
+                <span className="text-xs text-gray-600">High Risk</span>
+              </div>
+            </div>
+          </div> */}
+
+                    {/* Document Pendency Chart */}
+                    <div className="bg-white rounded-lg shadow p-3 flex flex-col">
             <h3 className="text-sm font-medium text-gray-800 mb-2">Document Pendency</h3>
             <div className="flex gap-4 mb-1 justify-center">
               <div className="flex items-center">
@@ -404,106 +749,6 @@ const DriverAnalyticsDashboard = () => {
                   />
                 </LineChart>
               </ResponsiveContainer>
-            </div>
-          </div>
-
-          {/* Payments Chart */}
-          <div className="bg-white rounded-lg shadow p-3 flex flex-col">
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="text-sm font-medium text-gray-800">Payment Methods</h3>
-              <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">C-SAT: 4.8</span>
-            </div>
-            <div className="flex gap-3 mb-1 justify-center">
-              <div className="flex items-center">
-                <div className="w-2 h-2 rounded-full bg-blue-600 mr-1"></div>
-                <span className="text-xs text-gray-600">Cash</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-2 h-2 rounded-full bg-emerald-500 mr-1"></div>
-                <span className="text-xs text-gray-600">Online</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-2 h-2 rounded-full bg-sky-400 mr-1"></div>
-                <span className="text-xs text-gray-600">QR</span>
-              </div>
-            </div>
-            <div className="flex-grow">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={paymentMethodsData} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                  <YAxis axisLine={false} tickLine={false} tickFormatter={(value) => `${value}%`} tick={{ fontSize: 10 }} />
-                  <Tooltip 
-                    formatter={(value) => [`${value}%`, '']}
-                    contentStyle={{ borderRadius: '4px', border: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', fontSize: '12px' }}
-                  />
-                  <Line type="monotone" dataKey="cash" stroke="#2563eb" strokeWidth={2} dot={{ r: 2 }} />
-                  <Line type="monotone" dataKey="online" stroke="#10b981" strokeWidth={2} dot={{ r: 2 }} />
-                  <Line type="monotone" dataKey="qr" stroke="#38bdf8" strokeWidth={2} dot={{ r: 2 }} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          {/* Infant Chart */}
-          <div className="bg-white rounded-lg shadow p-3 flex flex-col">
-            <h3 className="text-sm font-medium text-gray-800 mb-2">Infant Performance</h3>
-            <div className="flex-grow">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={infantData.slice(-6)} barSize={12} barGap={0} barCategoryGap={8} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                  <Tooltip 
-                    contentStyle={{ borderRadius: '4px', border: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', fontSize: '12px' }}
-                  />
-                  <Bar dataKey="d7" name="D7" stackId="a" fill="#4ade80" radius={[3, 3, 0, 0]} />
-                  <Bar dataKey="d15" name="D15" stackId="a" fill="#fbbf24" radius={[0, 0, 0, 0]} />
-                  <Bar dataKey="d30" name="D30" stackId="a" fill="#f87171" radius={[0, 0, 3, 3]} />
-                  <Line 
-                    type="monotone" 
-                    dataKey="collection" 
-                    stroke="#6366f1" 
-                    strokeWidth={2} 
-                    name="Collection" 
-                    dot={{ r: 3 }}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          {/* Driver Quadrant Chart */}
-          <div className="bg-white rounded-lg shadow p-3 flex flex-col">
-            <h3 className="text-sm font-medium text-gray-800 mb-2">Driver Segments</h3>
-            <div className="flex-grow">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={driverQuadrantData} barSize={14} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                  <Tooltip 
-                    contentStyle={{ borderRadius: '4px', border: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', fontSize: '12px' }}
-                  />
-                  <Bar dataKey="60+D7" name="Low Risk" fill="#4ade80" radius={[3, 3, 0, 0]} />
-                  <Bar dataKey="60-D7+" name="Medium Risk" fill="#fbbf24" radius={[0, 0, 0, 0]} />
-                  <Bar dataKey="60-D7-" name="High Risk" fill="#f87171" radius={[0, 0, 3, 3]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="flex justify-center mt-1 gap-3">
-              <div className="flex items-center">
-                <div className="w-2 h-2 rounded-full bg-green-400 mr-1"></div>
-                <span className="text-xs text-gray-600">Low Risk</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-2 h-2 rounded-full bg-amber-400 mr-1"></div>
-                <span className="text-xs text-gray-600">Medium</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-2 h-2 rounded-full bg-red-400 mr-1"></div>
-                <span className="text-xs text-gray-600">High Risk</span>
-              </div>
             </div>
           </div>
         </div>
