@@ -3,6 +3,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 import DriverAnalyticsDashboard from './components/Dashboard';
+import SalesDashboard from './components/Dashboard';
 
 function App() {
   useEffect(() => {
@@ -14,7 +15,8 @@ function App() {
 
   return (
     <>
-      <DriverAnalyticsDashboard />
+      {/* <DriverAnalyticsDashboard /> */}
+      <SalesDashboard/>
     </>
   );
 }

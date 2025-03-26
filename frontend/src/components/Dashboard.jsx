@@ -1,165 +1,21 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ScatterChart, Scatter, ZAxis } from 'recharts';
-// import { Download, Filter, ChevronDown, Users, TrendingUp, DollarSign, Clock, FileText, Bank } from 'lucide-react';
+import {   documentPendencyData, dealerPerformanceData, driverAnalyticsData ,colors} from "./ChartsData.jsx";
+import { Growth } from './Growth.jsx';
+import { Infant } from './Infant.jsx';
+import { Leadership } from './Leadership.jsx';
+import { DocumentPendency } from './Document.jsx';
+import DriverAnalytics from './DriverAnalytics.jsx';
+
 
 const DriverAnalyticsDashboard = () => {
   const [activeFilter, setActiveFilter] = useState('Growth');
   const [zoneFilter, setZoneFilter] = useState('All');
   const [monthFilter, setMonthFilter] = useState('Mar');
   
-  // Sample data based on image 3
-  const growthData = [
-    { month: 'Jul', achievement: 246, directSale: 300, partnership: 223 },
-    { month: 'Aug', achievement: 223, directSale: 325, partnership: 100 },
-    { month: 'Sep', achievement: 81, directSale: 261, partnership: 89 },
-    { month: 'Oct', achievement: 266, directSale: 400, partnership: 150 },
-    { month: 'Nov', achievement: 261, directSale: 400, partnership: 200 },
-    { month: 'Dec', achievement: 182, directSale: 320, partnership: 100 },
-    { month: 'Jan', achievement: 180, directSale: 300, partnership: 170 },
-    { month: 'Feb', achievement: 168, directSale: 410, partnership: 100 },
-    { month: 'Mar', achievement: 122, directSale: 350, partnership: 150 },
-  ];
-  
-  const billingCollectionData = [
-    { month: 'Jul', tgtAch: 91, comparison: 82 },
-    { month: 'Aug', tgtAch: 91, comparison: 84 },
-    { month: 'Sep', tgtAch: 90, comparison: 84 },
-    { month: 'Oct', tgtAch: 83, comparison: 76 },
-    { month: 'Nov', tgtAch: 92, comparison: 80 },
-    { month: 'Dec', tgtAch: 91, comparison: 77 },
-    { month: 'Jan', tgtAch: 96, comparison: 76 },
-    { month: 'Feb', tgtAch: 94, comparison: 76 },
-    { month: 'Mar', tgtAch: 70, comparison: 56 },
-  ];
-  
-  const documentPendencyData = [
-    { month: 'Oct', cheque: 0, others: 11 },
-    { month: 'Nov', cheque: 10, others: 3 },
-    { month: 'Dec', cheque: 17, others: 3 },
-    { month: 'Jan', cheque: 39, others: 1 },
-    { month: 'Feb', cheque: 85, others: 0 },
-    { month: 'Mar', cheque: 74, others: 0 },
-  ];
-  
-  const paymentMethodsData = [
-    { month: 'Sep', cash: 56, online: 36, qr: 8 },
-    { month: 'Oct', cash: 51, online: 46, qr: 3 },
-    { month: 'Nov', cash: 49, online: 45, qr: 6 },
-    { month: 'Dec', cash: 51, online: 44, qr: 5 },
-    { month: 'Jan', cash: 63, online: 33, qr: 4 },
-    { month: 'Feb', cash: 48, online: 46, qr: 6 },
-  ];
-  
-  const infantData = [
-    { month: 'Jul', d7: 343, d15: 78, d30: 51, collection: 60 },
-    { month: 'Aug', d7: 272, d15: 98, d30: 61, collection: 55 },
-    { month: 'Sep', d7: 450, d15: 113, d30: 70, collection: 65 },
-    { month: 'Oct', d7: 338, d15: 76, d30: 104, collection: 70 },
-    { month: 'Nov', d7: 325, d15: 73, d30: 53, collection: 62 },
-    { month: 'Dec', d7: 392, d15: 47, d30: 64, collection: 58 },
-    { month: 'Jan', d7: 533, d15: 51, d30: 42, collection: 65 },
-    { month: 'Feb', d7: 463, d15: 74, d30: 73, collection: 68 },
-  ];
-  
-  const driverQuadrantData = [
-    { month: 'Oct', '60+D7': 138, '60-D7+': 243, '60-D7-': 292 },
-    { month: 'Nov', '60+D7': 192, '60-D7+': 292, '60-D7-': 421 },
-    { month: 'Dec', '60+D7': 298, '60-D7+': 365, '60-D7-': 530 },
-    { month: 'Jan', '60+D7': 236, '60-D7+': 148, '60-D7-': 440 },
-    { month: 'Feb', '60+D7': 279, '60-D7+': 137, '60-D7-': 456 },
-    { month: 'Mar', '60+D7': 365, '60-D7+': 193, '60-D7-': 762 },
-  ];
-
-  const leadershipQuadrantData = [
-    { city: 'Saharanpur', collection: 150, growth: 50 },
-    { city: 'Agra', collection: 300, growth: 100 },
-    { city: 'Lucknow', collection: 280, growth: 120 },
-    { city: 'Gurugram', collection: 220, growth: 180 },
-    { city: 'Mathura', collection: 250, growth: 200 },
-    { city: 'Karnal', collection: 150, growth: 50 },
-    { city: 'Delhi', collection: 320, growth: 250 },
-    { city: 'Noida', collection: 280, growth: 220 },
-    { city: 'Jaipur', collection: 300, growth: 280 },
-    { city: 'Gwalior', collection: 320, growth: 300 }
-  ];
-
-
-  const dealerPerformanceData = [
-    { month: 'July', d15: 78, d30: 61, d7: 343, notPaid: 98 },
-    { month: 'Aug', d15: 98, d30: 70, d7: 272, notPaid: 113 },
-    { month: 'Sep', d15: 113, d30: 104, d7: 450, notPaid: 76 },
-    { month: 'Oct', d15: 76, d30: 53, d7: 338, notPaid: 325 },
-    { month: 'Nov', d15: 73, d30: 64, d7: 325, notPaid: 392 },
-    { month: 'Dec', d15: 47, d30: 42, d7: 533, notPaid: 51 },
-    { month: 'Jan', d15: 51, d30: 73, d7: 463, notPaid: 74 },
-    { month: 'Feb', d15: 74, d30: 64, d7: 133, notPaid: 73 }
-  ];
 
   
-
-  const driverAnalyticsData = [
-    { 
-      category: '60km+D7-', 
-      segments: [
-        { name: 'green', value: 1500 },
-        { name: 'red', value: 0 },
-        { name: 'yellow', value: 0 },
-        { name: 'orange', value: 0 }
-      ]
-    },
-    { 
-      category: '60km-D7+', 
-      segments: [
-        { name: 'green', value: 0 },
-        { name: 'red', value: 0 },
-        { name: 'yellow', value: 0 },
-        { name: 'orange', value: 1800 }
-      ]
-    },
-    { 
-      category: '60km+D15-', 
-      segments: [
-        { name: 'green', value: 0 },
-        { name: 'red', value: 828 },
-        { name: 'yellow', value: 0 },
-        { name: 'orange', value: 0 }
-      ]
-    },
-    { 
-      category: '60km+D15+', 
-      segments: [
-        { name: 'green', value: 0 },
-        { name: 'red', value: 500 },
-        { name: 'yellow', value: 0 },
-        { name: 'orange', value: 0 }
-      ]
-    },
-    { 
-      category: '60km-D7', 
-      segments: [
-        { name: 'green', value: 0 },
-        { name: 'red', value: 0 },
-        { name: 'yellow', value: 700 },
-        { name: 'orange', value: 0 }
-      ]
-    },
-    { 
-      category: '60km+D7', 
-      segments: [
-        { name: 'green', value: 0 },
-        { name: 'red', value: 0 },
-        { name: 'yellow', value: 0 },
-        { name: 'orange', value: 306 }
-      ]
-    }
-  ];
-
-  const colors = {
-    green: '#4ade80',
-    red: '#f87171',
-    yellow: '#eab308',
-    orange: '#f97316'
-  };
+  
 
 
   // Component for metric cards with improved design
@@ -228,11 +84,11 @@ const DriverAnalyticsDashboard = () => {
   };
 
   return (
-    <div className="bg-gray-50 p-3 h-screen overflow-hidden font-sans">
+    <div className="bg-gray-50 p-1 h-screen overflow-hidden font-sans">
       <div className="h-full flex flex-col space-y-3">
         {/* Header Section - Compact */}
-        <div className="flex items-center  justify-between space-x-2">
-          <h1 className="text-xl  font-bold text-gray-800">City Management</h1>
+        <div className="flex items-center justify-between space-x-2">
+          <h1 className="text-xl font-bold text-gray-800">City Management</h1>
           
           <div className="flex items-center space-x-2">
             <Selector 
@@ -248,62 +104,165 @@ const DriverAnalyticsDashboard = () => {
               onChange={(e) => setMonthFilter(e.target.value)} 
             />
             
-            <button className="ml-2 p-2 text-xs bg-indigo-600 hover:bg-indigo-700 text-white rounded flex items-center gap-1 transition-colors">
+            {/* <button className="ml-2 p-2 text-xs bg-indigo-600 hover:bg-indigo-700 text-white rounded flex items-center gap-1 transition-colors">
               {/* <Download size={14} /> */}
-              Export
-            </button>
+              {/* Export
+            </button> */} 
           </div>
         </div>
         
         {/* Metrics Row - Compact */}
-        <div className="grid grid-cols-6 gap-3">
-          <MetricCard 
-            // icon={<Users size={16} />} 
-            title="Total Drivers" 
-            value="223" 
-            subValue={<div className="flex justify-between text-xs"><span>LTO: 101</span><span>Direct: 122</span></div>} 
-            className="col-span-1"
-            color="blue"
-          />
-          <MetricCard 
-            // icon={<TrendingUp size={16} />} 
-            title="LTO Growth" 
-            value="29%" 
-            subValue={<div className="text-xs">Churn: 13 | NAD: 88/350</div>} 
-            className="col-span-1"
-            color="green"
-          />
-          <MetricCard 
+        <div className="grid grid-cols-6 gap-2">
+        <div className="bg-white rounded-lg shadow-md p-2 border-l-4 border-blue-500 hover:shadow-lg transition-shadow">
+      <div className="flex justify-between items-center mb-1">
+        <h3 className="text-base font-medium text-gray-700">Total Drivers</h3>
+        <div className="bg-blue-50 text-blue-500 p-1.5 rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+      </div>
+      <div className="flex flex-col">
+        <span className="text-xs font-bold text-gray-800">2K</span>
+        <div className="flex justify-between text-xs text-gray-600 mt-1">
+          <span>FinBat: 654</span>
+          <span>iBat: 954</span>
+          <span>iBat Lite: 954</span>
+        </div>
+      </div>
+    </div>
+    <div className="bg-white rounded-lg shadow-md p-2 border-l-4 border-green-500 hover:shadow-lg transition-shadow">
+      <div className="flex justify-between items-center mb-2">
+        <h3 className="text-base font-medium text-gray-700">LTO Growth</h3>
+        <div className="bg-green-50 text-green-500 p-1.5 rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+            <polyline points="17 6 23 6 23 12"/>
+          </svg>
+        </div>
+      </div>
+      <div className="flex flex-col">
+        <div className="flex justify-between items-baseline">
+          <span className="text-xs  text-gray-600">Current 47%</span>
+          <span className="text-xs text-gray-600">NAD</span>
+          <span className="text-xs text-gray-600">Churn 44%</span>
+        </div>
+        <div className="flex justify-between text-xs text-gray-600 mt-1">
+          <span>654/1K</span>
+          <span>213</span>
+          <span>441/1K</span>
+        </div>
+      </div>
+    </div>
+          {/* <MetricCard 
             // icon={<DollarSign size={16} />} 
             title="Collection" 
             value="48%" 
             subValue={<div className="text-xs">₹68L / ₹143L</div>} 
             className="col-span-1"
             color="purple"
-          />
-          <MetricCard 
-            // icon={<Clock size={16} />} 
-            title="DPD 60+" 
-            value="44 Drivers" 
-            subValue={<div className="text-xs">EMI's: 175 | Outstanding: ₹10L</div>} 
-            className="col-span-1"
-            color="red"
-          />
-          <MetricCard 
-            // icon={<FileText size={16} />} 
-            title="Document Pendency" 
-            value="81 Current" 
-            subValue={<div className="text-xs">Overall: 251</div>} 
-            className="col-span-1"
-            color="orange"
-          />
-          <MetricCard 
-            // icon={<Bank size={16} />} 
-            title="NBFC" 
-            value="13 Partners" 
-            className="col-span-1"
-            color="teal"
-          />
+          /> */}
+
+          {/* collection */}
+           <div className="bg-white rounded-lg shadow-md p-2 border-l-4 border-purple-500 hover:shadow-lg transition-shadow">
+      <div className="flex justify-between items-center mb-2">
+        <h3 className="text-base font-medium text-gray-700">Collection</h3>
+        <div className="bg-purple-50 text-purple-500 p-1.5 rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"/>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            <path d="M6 16h12"/>
+          </svg>
+        </div>
+      </div>
+      <div className="flex flex-col">
+        <span className="text-sm text-gray-800">Current 71%</span>
+        <span >₹363 L/₹510 L</span>
+        <div className="flex justify-between text-xs text-gray-600 mt-1">
+          
+          
+        </div>
+      </div>
+    </div>
+
+    {/* DPD 60+ */}
+
+    <div className="bg-white rounded-lg shadow-md p-2 border-l-4 border-red-500 hover:shadow-lg transition-shadow">
+      <div className="flex justify-between items-center mb-2">
+        <h3 className="text-sm font-medium text-gray-700">DPD 60+</h3>
+        <h3 className="text-sm font-medium text-gray-700">DPD 30+</h3>
+        <div className="bg-red-50 text-gray-500 p-1.5 rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+            <path d="M12 8v4"/>
+            <path d="M12 16h.01"/>
+          </svg>
+        </div>
+      </div>
+      <div className="flex flex-col">
+        <div className="flex justify-between text-sm text-gray-700 mb-1">
+          <span>Drivers</span>
+          <span>EMI's</span>
+          <span>Outstanding</span>
+        </div>
+        <div className="flex justify-between text-base font-bold text-gray-800">
+          <span>226</span>
+          <span>787</span>
+          <span>₹ 42 L</span>
+        </div>
+      </div>
+    </div>
+         {/* Document */}
+
+        
+<div className="bg-white rounded-lg shadow-md p-2 border-l-4 border-orange-500 hover:shadow-lg transition-shadow">
+  <div className="flex justify-between items-center mb-1">
+    <h3 className="text-base font-medium text-gray-700">Document Pendency</h3>
+    <div className="bg-orange-50 text-orange-500 p-1.5 rounded-full">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+        <line x1="10" y1="9" x2="8" y2="9"/>
+      </svg>
+    </div>
+  </div>
+  <div className="flex flex-col">
+    <div className="flex  justify-normal gap-8">
+      <span className="text-sm text-gray-600">Current</span>
+      <span className="text-sm text-gray-600">Overall</span>
+    </div>
+    <div className="flex justify-normal gap-12">
+      <span className="text-base font-bold text-gray-800">228</span>
+      <span className="text-base font-bold text-gray-800">252</span>
+    </div>
+  </div>
+</div>
+         {/* NBFC */}
+         <div className="bg-white rounded-lg shadow-md p-2 border-l-4 border-teal-500 hover:shadow-lg transition-shadow">
+  <div className="flex justify-between items-center mb-2">
+    <div className="flex space-x-2">
+      <span className="text-xs px-2 py-1 bg-gray-100 text-gray-700 rounded">NBFC</span>
+      <span className="text-xs px-2 py-1 bg-gray-100 text-gray-700 rounded">OEM</span>
+    </div>
+    <div className="bg-teal-50 text-teal-500 p-1.5 rounded-full">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+        <line x1="3" y1="9" x2="21" y2="9"/>
+        <line x1="9" y1="21" x2="9" y2="9"/>
+        <line x1="15" y1="21" x2="15" y2="9"/>
+      </svg>
+    </div>
+  </div>
+  <div className="flex flex-col">
+    <span className="text-base font-bold text-gray-800">423</span>
+    <span className="text-xs text-gray-600">Partnership</span>
+  </div>
+</div>
         </div>
 
         
@@ -312,194 +271,12 @@ const DriverAnalyticsDashboard = () => {
         {/* Charts Grid - Compact and Responsive */}
         <div className="grid grid-cols-3 gap-3 overflow-hidden flex-grow">
           {/* Growth Chart */}
-          <div className="bg-white rounded-lg shadow p-3 flex flex-col">
-      {/* <h3 className="text-sm font-medium text-gray-800 mb-2">Growth</h3> */}
-      <div className="space-x-8 text-center mb-2">
-            <FilterButton 
-              active={activeFilter === 'Growth'} 
-              onClick={() => setActiveFilter('Growth')}
-            >
-              Growth
-            </FilterButton>
-            <FilterButton 
-              active={activeFilter === 'NBFC'} 
-              onClick={() => setActiveFilter('NBFC')}
-            >
-              NBFC
-            </FilterButton>
-            <FilterButton 
-              active={activeFilter === 'Churn'} 
-              onClick={() => setActiveFilter('Churn')}
-            >
-              Churn
-            </FilterButton>
-            <FilterButton 
-              active={activeFilter === 'NAD'} 
-              onClick={() => setActiveFilter('NAD')}
-            >
-              NAD
-            </FilterButton>
-            <FilterButton 
-              active={activeFilter === 'Revenue'} 
-              onClick={() => setActiveFilter('Revenue')}
-            >
-              Revenue
-            </FilterButton>
-          </div>
-      <div className="flex-grow">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={growthData} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-            <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-            <YAxis domain={[0, 500]} axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-            <Tooltip 
-              formatter={(value, name) => [value, name]}
-              contentStyle={{ borderRadius: '4px', border: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', fontSize: '12px' }}
-            />
-            <Line 
-              type="monotone" 
-              dataKey="achievement" 
-              stroke="#000000" 
-              strokeWidth={2} 
-              dot={{ r: 3 }}
-              name="Achievement"
-            />
-            <Line 
-              type="monotone" 
-              dataKey="directSale" 
-              stroke="#9747FF" 
-              strokeWidth={2} 
-              dot={{ r: 3 }}
-              name="Direct Sale"
-            />
-            <Line 
-              type="monotone" 
-              dataKey="partnership" 
-              stroke="#0075FF" 
-              strokeWidth={2} 
-              dot={{ r: 3 }}
-              name="Partnership"
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
+          <Growth/>
 
           {/* TGT/ACH Chart */}
-          <div className="bg-white rounded-lg shadow p-3 flex flex-col">
-      <div className="flex justify-between items-center mb-2">
-        {/* <h3 className="text-sm font-medium text-gray-800">Collection Rate</h3> */}
-        <div className="space-x-6 text-center mb-2">
-            <FilterButton 
-              active={activeFilter === 'TGT/ACH'} 
-              onClick={() => setActiveFilter('TGT/ACH')}
-            >
-              TGT/ACH
-            </FilterButton>
-            <FilterButton 
-              active={activeFilter === 'Infant'} 
-              onClick={() => setActiveFilter('Infant')}
-            >
-              Infant
-            </FilterButton>
-            <FilterButton 
-              active={activeFilter === 'DPD 60+'} 
-              onClick={() => setActiveFilter('DPD 60+')}
-            >
-              DPD 60+
-            </FilterButton>
-            <FilterButton 
-              active={activeFilter === 'DPD 30+'} 
-              onClick={() => setActiveFilter('DPD 30+')}
-            >
-              DPD 30+
-            </FilterButton>
-            <FilterButton 
-              active={activeFilter === 'Payments'} 
-              onClick={() => setActiveFilter('Payments')}
-            >
-              Payments
-            </FilterButton>
-          </div>
-        {/* <div className="flex text-xs space-x-2">
-          <span className="px-2 py-1 bg-indigo-100 text-indigo-700 rounded-full">TGT/ACH</span>
-        </div> */}
-      </div>
-      <div className="flex-grow">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={billingCollectionData} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-            <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-            <YAxis domain={[50, 100]} axisLine={false} tickLine={false} tickFormatter={(value) => `${value}%`} tick={{ fontSize: 10 }} />
-            <Tooltip 
-              formatter={(value, name) => [`${value}%`, name === 'tgtAch' ? 'TGT/ACH' : 'Comparison']}
-              contentStyle={{ borderRadius: '4px', border: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', fontSize: '12px' }}
-            />
-            <Line 
-              type="monotone" 
-              dataKey="tgtAch" 
-              stroke="#9747FF" 
-              strokeWidth={2}
-              dot={{ r: 4 }}
-              name="TGT/ACH"
-            />
-            <Line 
-              type="monotone" 
-              dataKey="comparison" 
-              stroke="#0075FF" 
-              strokeWidth={2}
-              dot={{ r: 4 }}
-              name="Comparison"
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
+          <Infant/>
             {/* Leadership Quadrant Chart */}
-    <div className="bg-white rounded-lg shadow p-3 flex flex-col">
-            <h3 className="text-sm text-center font-medium text-gray-800 mb-2">Leadership Quadrant</h3>
-            <div className="flex-grow">
-              <ResponsiveContainer width="100%" height="100%">
-                <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis 
-                    type="number" 
-                    dataKey="growth" 
-                    name="Growth" 
-                    unit="%" 
-                    tick={{ fontSize: 10 }}
-                    axisLine={false} 
-                    tickLine={false}
-                  />
-                  <YAxis 
-                    type="number" 
-                    dataKey="collection" 
-                    name="Collection" 
-                    unit="%" 
-                    tick={{ fontSize: 10 }}
-                    axisLine={false} 
-                    tickLine={false}
-                  />
-                  <ZAxis type="category" dataKey="city" name="City" />
-                  <Tooltip 
-                    cursor={{ strokeDasharray: '3 3' }} 
-                    contentStyle={{ 
-                      borderRadius: '4px', 
-                      border: 'none', 
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.15)', 
-                      fontSize: '12px' 
-                    }} 
-                    formatter={(value, name, props) => [value, name, props.payload.city]}
-                  />
-                  <Scatter 
-                    name="Cities" 
-                    data={leadershipQuadrantData} 
-                    fill="#8884d8" 
-                  />
-                </ScatterChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
+            <Leadership/>
           
 
           {/* Payments Chart */}
@@ -599,7 +376,7 @@ const DriverAnalyticsDashboard = () => {
             barSize={20} 
             margin={{ top: 5, right: 5, bottom: 5, left: 5 }}
           >
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+            {/* <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" /> */}
             <XAxis 
               dataKey="month" 
               axisLine={false} 
@@ -628,7 +405,7 @@ const DriverAnalyticsDashboard = () => {
       </div>
     </div>
     {/* Driver Analytics */}
-          <div className="bg-white rounded-lg shadow p-3 flex flex-col">
+          {/* <div className="bg-white rounded-lg shadow p-2 flex flex-col">
       <h3 className="text-sm font-medium text-center text-gray-800 mb-2">Driver Analytics</h3>
       
       <div className="flex-grow">
@@ -673,7 +450,8 @@ const DriverAnalyticsDashboard = () => {
           </BarChart>
         </ResponsiveContainer>
       </div>
-    </div>
+    </div> */}
+    <DriverAnalytics/>
           {/* Driver Quadrant Chart */}
           {/* <div className="bg-white rounded-lg shadow p-3 flex flex-col">
             <h3 className="text-sm font-medium text-gray-800 mb-2">Driver Segments</h3>
@@ -709,48 +487,7 @@ const DriverAnalyticsDashboard = () => {
           </div> */}
 
                     {/* Document Pendency Chart */}
-                    <div className="bg-white rounded-lg shadow p-3 flex flex-col">
-            <h3 className="text-sm font-medium text-gray-800 mb-2">Document Pendency</h3>
-            <div className="flex gap-4 mb-1 justify-center">
-              <div className="flex items-center">
-                <div className="w-2 h-2 rounded-full bg-indigo-600 mr-1"></div>
-                <span className="text-xs text-gray-600">Cheque</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-2 h-2 rounded-full bg-purple-500 mr-1"></div>
-                <span className="text-xs text-gray-600">Others</span>
-              </div>
-            </div>
-            <div className="flex-grow">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={documentPendencyData} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                  <Tooltip 
-                    formatter={(value, name) => [value, name === 'cheque' ? 'Cheque' : 'Others']}
-                    contentStyle={{ borderRadius: '4px', border: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', fontSize: '12px' }}
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="cheque" 
-                    stroke="#6366f1" 
-                    strokeWidth={2} 
-                    dot={{ r: 3 }}
-                    activeDot={{ r: 5 }} 
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="others" 
-                    stroke="#a855f7" 
-                    strokeWidth={2} 
-                    dot={{ r: 3 }}
-                    activeDot={{ r: 5 }} 
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
+                    <DocumentPendency/>
         </div>
       </div>
     </div>
